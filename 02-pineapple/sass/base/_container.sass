@@ -4,17 +4,23 @@ body
 	:letter-spacing 1.5px
 	:color #{'{{ settings.color_body_text }}'}
 p 
-	:font-weight 110
-	:color red
+	:font-weight 100
 a
 	:text-decoration none
 	:color #111
 img 
-	:max-width 100%	
+	:max-width 100%
+img.logo
+	:max-width 100px
+	:display block
+	:margin 0 auto
+.shop-name
+	:text-align center	
 #cart-drawer
 	:transition 0.5s all ease
 	:-webkit-transition 0.5s all ease
 .container
+	:border 1px solid blue
 	@extend %make-adaptive
 	:box-sizing border-box
 	:position relative
