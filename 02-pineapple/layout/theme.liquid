@@ -1,0 +1,19 @@
+<!-- This is like the index page of your site
+templates will be rendered inside of here
+you probably want to put your nav and footer in this file -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }} - {{ shop.name }}</title>
+
+  {{ content_for_header }}
+
+  {{ "normalize.css" | asset_url | stylesheet_tag }}
+  {{ 'styles.scss' | asset_url | stylesheet_tag }}
+</head>
+<body>
+      {{ content_for_layout}}
+</body>
+</html>

@@ -1,0 +1,51 @@
+body
+	:font-family Futura, Helvetica, Arial, sans-serif
+	:line-height 1.5
+	:letter-spacing 1.5px
+	:color #{'{{ settings.color_body_text }}'}
+p 
+	:font-weight 110
+	:color red
+a
+	:text-decoration none
+	:color #111
+img 
+	:max-width 100%	
+#cart-drawer
+	:transition 0.5s all ease
+	:-webkit-transition 0.5s all ease
+.container
+	@extend %make-adaptive
+	:box-sizing border-box
+	:position relative
+	+display-for(xl lg md sm)
+		:margin 0 auto
+	+display-for(xs)
+		:margin 0
+		:padding 0 12px
+	&--flex
+		:display flex
+		:align-items stretch
+		:flex-direction row
+		:justify-content space-between
+		:align-content space-between
+		:flex-wrap wrap
+		:flex 1 0 50%
+	&--flex-center	
+		:display flex
+		:align-items center
+		:justify-content space-between
+		:align-content space-between
+		:flex-wrap wrap
+	// .item
+	// 	display: flex;
+	// 	flex: 1 1 50%;
+	// 	margin: 5px;
+.left
+	:float left
+.right
+	:float right
+.hidden
+	:display none
+.margin-bottom-30
+	:margin-bottom 30px
