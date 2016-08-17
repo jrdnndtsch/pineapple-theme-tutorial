@@ -1,3 +1,4 @@
+
 <!-- This is like the index page of your site
 templates will be rendered inside of here
 you probably want to put your nav and footer in this file -->
@@ -17,6 +18,7 @@ you probably want to put your nav and footer in this file -->
   {{ "shopify_common.js" | shopify_asset_url | script_tag }}
   {{ "customer_area.js"  | shopify_asset_url | script_tag }}
   {{ "//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" | script_tag }}
+  
 </head>
 <body>
 	<div class="container">
@@ -31,6 +33,9 @@ you probably want to put your nav and footer in this file -->
 		 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
 		{% endfor %}
 	  </ul>
+
+		<!-- Link to cart page that shows number of items and count -->
+	  <h3>Cart: <a href="/cart">{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</a></h3>
 
     {{ content_for_layout}}
 
