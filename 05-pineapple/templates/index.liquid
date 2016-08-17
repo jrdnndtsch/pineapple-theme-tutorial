@@ -1,0 +1,12 @@
+
+{% assign page = pages.frontpage %}
+<h2>{{ page.title }}</h2>
+<p>{{ page.content }}</p>
+
+{% assign collection = collections.frontpage %}
+<div class="clearfix">
+  <h2>Collection: {{ collection.title }}</h2>
+    {% for product in collection.products | limit:8 %}
+      {% include 'product-loop' %}
+    {% endfor %}
+</div>

@@ -1,0 +1,69 @@
+header
+	:padding-bottom 40px
+h1.logo	
+	:letter-spacing 6px
+	:line-height 60px
+	:border-bottom 5px solid #111
+	:padding-bottom 20px
+	+display-for(md)
+		:font-size 24px
+		:line-height 50px
+	+display-for(sm xs)
+		:width 100%
+		:text-align center
+	span
+		:display block	
+		+display-for(sm xs)
+			:display inline
+.cart-info
+	a 
+		:color #111
+	i 
+		:font-size 18px
+		:line-height 26px
+	.cart-items
+		:display inline-block
+		:height 26px
+		:width 26px
+		:background #5bffe6
+		:border-radius 50%
+		:text-align center
+		:line-height 26px
+.main-menu
+	:text-align center
+	:margin-top 24px
+	+display-for(sm xs)
+		:display block
+		:margin 0 auto
+	+display-for(xs)
+		:margin-bottom 40px
+	ul 
+		:margin 0 
+		:padding 0
+	li
+		:display inline-block
+		:padding 0px 20px
+		+display-for(xs)
+			:padding 0 12px
+		&:first-of-type
+			:padding-left 0	
+	a
+		:color #111
+		:font-weight bold
+		&:before
+			:content ''
+			:display block
+			:position relative
+			:margin-top -2px
+			:width 0
+			:top 1.8em
+			:border-bottom 5px solid #5bffe6
+			:transition width .4s
+		&:hover
+			&:before
+				:width 100%
+	.cart-info
+		a
+			&:before
+				:display none			
+

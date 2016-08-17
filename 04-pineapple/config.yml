@@ -1,0 +1,12 @@
+---
+:api_key: 66623fa6171c27f42f7282931ed2fdbe
+:password: ca21fac5b94dbc396b6558670a7b1052
+:store: pineapple-18.myshopify.com
+:theme_id: 
+:whitelist_files:
+- layout/
+- assets/
+- config/
+- snippets/
+- templates/
+- locales/
