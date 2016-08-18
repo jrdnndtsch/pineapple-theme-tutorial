@@ -1,0 +1,30 @@
+.container, 
+.container--flex, 
+.container--flex-center
+	.col
+		&--two
+			+make-column(19.32)
+			+display-for(sm xs)
+				+make-column(40)
+		&--three
+			+make-column(13)
+			+display-for(sm)
+				+make-column(20)
+			+display-for(xs)
+				+make-column(40)
+		&--four
+			+make-column(9)
+			+display-for(sm)
+				+make-column(20)
+			+display-for(xs)
+				+make-column(40)
+		&--two-thirds
+			+make-column(26)
+			+display-for(sm)
+				+make-column(40)
+			+display-for(xs)
+				+make-column(40)
+	.col--two, .col--three, .col--four
+		// :padding 20px
+		img
+			:width 100%

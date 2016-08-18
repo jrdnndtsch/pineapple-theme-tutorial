@@ -1,0 +1,86 @@
+$white : rgba(255,255,255,0.9)
+#cart-drawer.active
+	// :display block
+	:width 300px
+	:padding 14px
+	div 
+		:display block
+#cart-drawer.closed
+	// :display none
+	:width 0
+	:padding 0
+	div
+		:display none
+.cart-table
+	:width 100%
+.cart-table
+	thead
+		:border-bottom 1px solid #ccc
+.cart-table
+	th
+		:text-align left
+		:padding 20px
+.cart-table
+	td
+		:padding 30px 10px 0 10px
+.item-thumb
+	:border 1px solid #ccc
+	:padding 20px
+	:width 100px
+	:height 100px
+.item-qty
+	:width 90px
+.cart-options
+	:text-align right
+.cart-info
+	:padding 7px 25px 0 0
+
+
+.drawer
+	:width 300px
+	:max-width 100%
+	:background #111
+	:color $white
+	:position fixed
+	:height 100vh
+	:z-index 10
+	:right 0
+	:top 0
+	// :display none
+	:padding 14px
+	.ajaxcart__inner
+		:overflow scroll
+	.cart-title
+		:border-bottom 3px solid $white
+	.cart-product-details, .ajaxcart__qty
+		:margin-bottom 8px
+	.all-cart-info
+		:padding-left 10px
+	h2 
+		:display inline-block
+		:margin-top 0
+	input, .ajaxcart__qty-adjust		
+		:background #111
+		:color $white
+		:border 3px solid $white
+	input
+		:width 50%	
+		:padding-left 4px
+	.ajaxcart__qty-adjust	
+		:padding 1px 3px
+	span#close_cart
+		:position absolute
+		:right 14px 
+		:top 14px
+		:display inline-block
+		:cursor pointer
+		:font-size 24px
+	.ajaxcart__row
+		:display flex
+		:padding 12px 0
+		:border-bottom 3px solid $white
+		a 
+			:color $white
+		
+
+					
