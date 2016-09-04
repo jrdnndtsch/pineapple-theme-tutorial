@@ -1,7 +1,7 @@
 <div class="product-page margin-bottom-30 container--flex clearfix">
 	<div class="product-images col--two left">
 
-	<!-- the products featured image -->
+		<!-- the products featured image -->
 	  <div class="product-featured-image">
 	    <a href="{{ product.featured_image.src | product_img_url: '750x', scale: 3 }}">
 	      <img src="{{ product.featured_image.src | product_img_url: '750x', scale: 3 }}" alt="{{ product.featured_image.alt | escape }}" />
@@ -11,11 +11,11 @@
 	  <!-- if the product has extra product shots -->
 	  <div class="product-img-list clearfix">
 	    {% for image in product.images | offset:1 %}
-	    <div class="product-img left {% cycle '','','last' %}">
-	      <a href="{{ image.src | product_img_url: 'original' }}">
-	        <img src="{{ image.src | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
-	      </a>
-	    </div>
+		    <div class="product-img left {% cycle '','','last' %}">
+		      <a href="{{ image.src | product_img_url: 'original' }}">
+		        <img src="{{ image.src | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
+		      </a>
+		    </div>
 	    {% endfor %}
 	  </div>
 	</div>
@@ -30,7 +30,7 @@
 				
 	      <div>
 	      	<!-- if there is not size options for the product create a hidden input the the only option -->
-	        {% if product.variants.size == 1%}
+	        {% if product.variants.size == 1 %}
 	          <label for="product-select-option-0"></label>
 	          <input type="hidden" value="{{ product.variants.first.id }}" id="product-select-option-0" name="id">
 
@@ -53,23 +53,24 @@
 	 <!-- navigating to previous/next product in the collection -->
 	{% if collection %}
 	  <div class="clearfix">
-	{% if collection.previous_product %}
-		<div class="left">{{ '&larr; Previous Product' | link_to: collection.previous_product }}
-		</div>
-	{% endif %}
+
+		{% if collection.previous_product %}
+			<div class="left">{{ '&larr; Previous Product' | link_to: collection.previous_product }}
+			</div>
+		{% endif %}
 		{% if collection.next_product %}
 			<div class="right">{{ 'Next Product &rarr;' | link_to: collection.next_product }}
 			</div>
 		{% endif %}
 	{% endif %}
 
-
 	</div>
 </div>
 
 <script type="text/javascript">
 
-  // A call back to check if there are variants, if it there are it checks availability.  If there is no product, it disables the purchase button and puts a 'Sold Out' or 'Unavailable' message 
+  // A call back to check if there are variants, if there are, it checks availability.  
+  // If there is no product, it disables the purchase button and puts a 'Sold Out' or 'Unavailable' message 
 var selectCallback = function(variant, selector) {
   if (variant && variant.available == true) {
     // selected a valid variant
