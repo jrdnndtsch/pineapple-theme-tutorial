@@ -122,7 +122,8 @@ you probably want to put your nav and footer in this file -->
 		}) // end ready function
 
 		function addItem(variant_id) {
-		  var quantity = 1
+			var update_quantity = parseInt($('input[data-id="' + variant_id + '"]').val()) + 1
+		  // var quantity = 1
 		  var data = 'id='+ variant_id + '&quantity=1' 
 		   $.ajax({
 		      type: 'POST', 
@@ -130,7 +131,7 @@ you probably want to put your nav and footer in this file -->
 		      dataType: 'json', 
 		      data: data,
 		      success: function(){
-		        // addToCartOk(quantity);
+		        changeItemQuantityOk(variant_id, update_quantity);
 		        // location.reload()
 		        console.log('added')
 		      },
@@ -148,7 +149,7 @@ you probably want to put your nav and footer in this file -->
 		      dataType: 'json', 
 		      data: data,
 		      success: function(){
-		        // addToCartOk(quantity);
+		        changeItemQuantityOk(variant_id, quantity);
 		        // location.reload()
 		        console.log('changed')
 		      },
@@ -156,6 +157,12 @@ you probably want to put your nav and footer in this file -->
 		      	alert(error.responseJSON.description)
 		      }
 		   });
+		}
+
+		function changeItemQuantityOk(variant_id, quantity){
+			var input = $('input[data-id="' + variant_id + '"]')
+			input.val(quantity)
+			console.log(input.val())
 		}
 	</script>
 
