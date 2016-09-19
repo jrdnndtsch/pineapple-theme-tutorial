@@ -49,11 +49,11 @@ you probably want to put your nav and footer in this file -->
 							<span class="price">{{ item.price | money }}</span>
 						</div>
 						<div class="cart--qty">
-						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}">
+						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}" onclick="changeItemQuantity('{{ item.id }}', {{ item.quantity | minus: 1 }})">
 						    <span class="fallback-text">&minus;</span>
 						  </button>
-						  <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{item.quantity}}" min="0" data-id="{{item.product.id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
-						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}">
+						  <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{item.quantity}}" min="0" data-id="{{item.id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}" onclick="addItem('{{ item.id }}')">
 						    <span class="fallback-text">+</span>
 						  </button>
 						</div>
@@ -62,7 +62,7 @@ you probably want to put your nav and footer in this file -->
 			{% endfor %}
 		{% endif %}
 		<div class="cart--total">
-		
+
 			 <!-- Shows total price of the cart -->
 			<p><span>Subtotal:</span><span>{{ cart.total_price | money }}</span></p>
 
@@ -111,7 +111,52 @@ you probably want to put your nav and footer in this file -->
 				}, 300)
 			});
 
-		})
+			// Change quantity of product when field changes
+			$('.ajaxcart__qty-num').on('change', function(){
+				var id = $(this).data('id');
+				var quantity = parseInt($(this).val());
+				console.log(id, quantity)
+				changeItemQuantity(id, quantity)
+			})
+
+		}) // end ready function
+
+		function addItem(variant_id) {
+		  var quantity = 1
+		  var data = 'id='+ variant_id + '&quantity=1' 
+		   $.ajax({
+		      type: 'POST', 
+		      url: '/cart/add.js',
+		      dataType: 'json', 
+		      data: data,
+		      success: function(){
+		        // addToCartOk(quantity);
+		        // location.reload()
+		        console.log('added')
+		      },
+		      error: function(error){
+		      	alert(error.responseJSON.description)
+		      }
+		   });
+		}
+
+		function changeItemQuantity(variant_id, quantity) {
+		  var data = 'id='+ variant_id + '&quantity='+ quantity 
+		   $.ajax({
+		      type: 'POST', 
+		      url: '/cart/change.js',
+		      dataType: 'json', 
+		      data: data,
+		      success: function(){
+		        // addToCartOk(quantity);
+		        // location.reload()
+		        console.log('changed')
+		      },
+		      error: function(error){
+		      	alert(error.responseJSON.description)
+		      }
+		   });
+		}
 	</script>
 
 </body>
