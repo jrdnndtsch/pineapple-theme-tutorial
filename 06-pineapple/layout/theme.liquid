@@ -1,4 +1,3 @@
-
 <!-- This is like the index page of your site
 templates will be rendered inside of here
 you probably want to put your nav and footer in this file -->
@@ -18,37 +17,102 @@ you probably want to put your nav and footer in this file -->
   {{ "shopify_common.js" | shopify_asset_url | script_tag }}
   {{ "customer_area.js"  | shopify_asset_url | script_tag }}
   {{ "//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" | script_tag }}
-  
 </head>
 <body>
-	<div class="container">
-
-		<!-- Shop Name and Logo -->
-		<img src="{{'logo.svg' | asset_url}}" class="logo" alt="pineapple">
-		<h1 class="shop-name"><a href="/">{{ shop.name }}</a></h1>
-
-		<!-- Navigation Main Menu -->
+	<!-- Navigation Main Menu -->
+	<nav class="main">
 		<ul>
-		{% for link in linklists.main-menu.links %}
-		 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
-		{% endfor %}
-	  </ul>
+			{% for link in linklists.main-menu.links %}
+			 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</nav>
 
-		<!-- Link to cart page that shows number of items and count -->
-	  <h3>Cart: <a href="/cart">{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</a></h3>
+	<!-- Slide-out Cart -->
+	<div class="cart--quick">
+		<h2>My Cart</h2>
+		{% if cart.item_count > 0 %}
+			<h3>items in cart</h3>
+			{% for item in cart.items %}
+				<div class="cart--product">
+					<div class="cart--product-image">
+						<img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}" >
+					</div>
+					<div class="cart--product-details">
+						<div>	
+							<h3>{{item.product.title}}</h3>
+							<h3>
+							  {% unless item.variant.title contains 'Default' %}
+							    {{ item.variant.title }}
+							  {% endunless %}
+							</h3>
+							<span class="price">{{ item.price | money }}</span>
+						</div>
+						<div class="cart--qty">
+						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}">
+						    <span class="fallback-text">&minus;</span>
+						  </button>
+						  <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{item.quantity}}" min="0" data-id="{{item.product.id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}">
+						    <span class="fallback-text">+</span>
+						  </button>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+		<div class="cart--total">
+		
+			 <!-- Shows total price of the cart -->
+			<p><span>Subtotal:</span><span>{{ cart.total_price | money }}</span></p>
 
-    {{ content_for_layout}}
+			<!-- Link to checkout -->
+			<a href="/checkout" class="btn">Checkout</a>
+		</div>
+	</div>
 
-		<footer>
+	<!-- The Store Title -->
+  <header>
+  	<h1 class="shop-name"><a href="/">{{ shop.name }}</a></h1>
+  </header>
+
+	<a href="#" class="main--toggle"><span></span></a>
+
+  <!-- Content from all the pages will be swapped into here -->
+  	{{ content_for_layout}}
+
+	<!-- The Footer Links -->
+	<footer>
+		<div class="wrapper">
 	    <ul>
 	  		{% for link in linklists.footer.links %}
 	  	 	<li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
 	  		{% endfor %}
 	    </ul>
-		</footer>
+		</div>
+	</footer>
 
+	<script>
+		$(function(){
+			
+			// Toggle Main Menu Slide-out
+			$('.main--toggle').on('click', function(){
+				$(this).toggleClass('active');
+				$('nav.main').toggleClass('active');
+				$('main').toggleClass('active-nav');
+			});
 
+			// Toggle Cart Slide-out
+			$('.cart').on('click', function(){
+				$('.cart--quick').toggleClass('active');
+				$('main').toggleClass('active-cart');
+				setTimeout(function(){
+					$('main').hasClass('active-cart') ? $('main').css('left', 'auto') : $('main').attr('style', '')
+				}, 300)
+			});
 
-	</div>
+		})
+	</script>
+
 </body>
 </html>
