@@ -21,34 +21,83 @@ you probably want to put your nav and footer in this file -->
   
 </head>
 <body>
-	<div class="container">
-
-		<!-- Shop Name and Logo -->
-		<img src="{{'logo.svg' | asset_url}}" class="logo" alt="pineapple">
-		<h1 class="shop-name"><a href="/">{{ shop.name }}</a></h1>
-
 		<!-- Navigation Main Menu -->
+	<nav class="main">
 		<ul>
-		{% for link in linklists.main-menu.links %}
-		 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
-		{% endfor %}
-	  </ul>
+			{% for link in linklists.main-menu.links %}
+			 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</nav>
 
-		<!-- Link to cart page that shows number of items and count -->
-	  <h3>Cart: <a href="/cart">{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</a></h3>
+	<!-- Slide-out Cart -->
+	<div class="cart--quick">
+		<h2>My Cart</h2>
+		<div class="cart--product">
+			<div class="cart--product-image">
+				<img src="assets/pineapple-1.jpg" alt="">
+			</div>
+			<div class="cart--product-details">
+				<div>	
+					<h3>The Line Up</h3>
+					<span class="price">$20.00</span>
+				</div>
+				<div class="cart--qty">
+				  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}">
+				    <!-- <span class="icon icon-minus" aria-hidden="true"></span> -->
+				    <span class="fallback-text">&minus;</span>
+				  </button>
+				  <input type="text" name="updates[]" class="ajaxcart__qty-num" value="231" min="0" data-id="{{id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+				  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}">
+				    <!-- <span class="icon icon-plus" aria-hidden="true"></span> -->
+				    <span class="fallback-text">+</span>
+				  </button>
+				</div>
+			</div>
+		</div>
+		<div class="cart--total">
+				<!-- Link to cart page that shows number of items and count -->
+			  <h3>Cart: <a href="/cart">{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</a></h3>
+			<p><span>Subtotal:</span><span>$56.50</span></p>
+			<a href="" class="btn">Checkout</a>
+		</div>
+	</div>
 
+	<header>
+		<h1 class="shop-name"><a href="/">{{ shop.name }}</a></h1>
+	</header>
+		<!-- Shop Name and Logo -->
+		<!-- <img src="{{'logo.svg' | asset_url}}" class="logo" alt="pineapple"> -->
+		
     {{ content_for_layout}}
 
 		<footer>
-	    <ul>
-	  		{% for link in linklists.footer.links %}
-	  	 	<li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
-	  		{% endfor %}
-	    </ul>
+			<div class="wrapper">
+		    <ul>
+		  		{% for link in linklists.footer.links %}
+		  	 	<li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
+		  		{% endfor %}
+		    </ul>
+			</div>
 		</footer>
 
 
 
-	</div>
+	<script>
+		$(function(){
+			$('.main--toggle').on('click', function(){
+				$(this).toggleClass('active');
+				$('nav.main').toggleClass('active');
+				$('main').toggleClass('active-nav');
+			});
+			$('.cart').on('click', function(){
+				$('.cart--quick').toggleClass('active');
+				$('main').toggleClass('active-cart');
+				setTimeout(function(){
+					$('main').hasClass('active-cart') ? $('main').css('left', 'auto') : $('main').attr('style', '')
+				}, 300)
+			})
+		})
+	</script>
 </body>
 </html>

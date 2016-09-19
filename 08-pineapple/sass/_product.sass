@@ -1,0 +1,30 @@
+main.product 
+	:background $colorPrimary
+	:padding-top 80px
+	.flex-container 
+		:padding-bottom 40px
+		+display-for(sm xs)
+			:flex-direction column-reverse
+			:-webkit-flex-direction column-reverse
+		div 
+			:flex 1 1 50%
+			:-webkit-flex 1 1 50%
+			+display-for(sm xs)
+				:flex 1 0 100%
+				:-webkit-flex 0 0 auto
+	.product--details
+		:padding-right 12%	
+		+display-for(sm xs)
+			:padding-right 0
+		p:last-of-type
+			:margin-bottom 40px	
+	.product--navigation
+		:padding 40px 0
+		:display flex
+		:display -webkit-flex
+		:justify-content space-between
+		:-webkit-justify-content space-between
+		a 
+			:color black
+			:text-decoration none
+			:font-family $titleFont		

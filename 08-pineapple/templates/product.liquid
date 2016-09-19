@@ -1,71 +1,60 @@
-<div class="product-page margin-bottom-30 container--flex clearfix">
-	<div class="product-images col--two left">
+<main class="product">
+	<div class="wrapper">
+		<a href="#" class="main--toggle"><span></span></a>
+		<div class="cart"></div>
+		<div class="flex-container">
+			<div class="product--details">
+				<h2 class="">{{ product.title }}</h2>
+				<p>{{ product.description}}</p>
+				    <form action="/cart/add" method="post" class="product-form" id="add-to-cart">
+							
+				      <div>
+				      	<!-- if there is not size options for the product create a hidden input the the only option -->
+				        {% if product.variants.size == 1 %}
+				          <label for="product-select-option-0"></label>
+				          <input type="hidden" value="{{ product.variants.first.id }}" id="product-select-option-0" name="id">
 
+				        {% else%}
+								<!-- Otherwise, put a drop down with all the size options -->
+				          <div>
+				            <select id="product-select" name="id">
+				              {% for variant in product.variants %}
+				                <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+				              {% endfor %}
+				            </select>
+				          </div>
+				        {% endif %}
+				      </div>
+
+				    <input type="submit" name="add" value="Purchase" class="purchase btn"  id="AddToCart" />
+				  	</form>
+			</div>
+			<div class="product--image">
 		<!-- the products featured image -->
-	  <div class="product-featured-image">
-	    <a href="{{ product.featured_image.src | product_img_url: '750x', scale: 3 }}">
-	      <img src="{{ product.featured_image.src | product_img_url: '750x', scale: 3 }}" alt="{{ product.featured_image.alt | escape }}" />
-	    </a>
-	  </div>
-
-	  <!-- if the product has extra product shots -->
-	  <div class="product-img-list clearfix">
-	    {% for image in product.images | offset:1 %}
-		    <div class="product-img left {% cycle '','','last' %}">
-		      <a href="{{ image.src | product_img_url: 'original' }}">
-		        <img src="{{ image.src | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
-		      </a>
-		    </div>
-	    {% endfor %}
-	  </div>
-	</div>
-
-	<!-- Product title, cost, and description -->
-	<div class=" col--two left">
-	  <h2 class="">{{ product.title }}</h2>
-	  <div class="price-field"></div>
-	  <div>{{ product.description}}</div>
-	  <div class="container--flex margin-bottom-30">
-	    <form action="/cart/add" method="post" class="product-form" id="add-to-cart">
-				
-	      <div>
-	      	<!-- if there is not size options for the product create a hidden input the the only option -->
-	        {% if product.variants.size == 1 %}
-	          <label for="product-select-option-0"></label>
-	          <input type="hidden" value="{{ product.variants.first.id }}" id="product-select-option-0" name="id">
-
-	        {% else%}
-					<!-- Otherwise, put a drop down with all the size options -->
-	          <div>
-	            <select id="product-select" name="id">
-	              {% for variant in product.variants %}
-	                <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
-	              {% endfor %}
-	            </select>
-	          </div>
-	        {% endif %}
-	      </div>
-
-	    <input type="submit" name="add" value="Purchase" class="purchase"  id="AddToCart" />
-	  	</form>
-	  </div>
-
-	 <!-- navigating to previous/next product in the collection -->
-	{% if collection %}
-	  <div class="clearfix">
-
-		{% if collection.previous_product %}
-			<div class="left">{{ '&larr; Previous Product' | link_to: collection.previous_product }}
+				<a href="{{ product.featured_image.src | product_img_url: '750x', scale: 3 }}">
+				  <img src="{{ product.featured_image.src | product_img_url: '750x', scale: 3 }}" alt="{{ product.featured_image.alt | escape }}" />
+				</a>
 			</div>
-		{% endif %}
-		{% if collection.next_product %}
-			<div class="right">{{ 'Next Product &rarr;' | link_to: collection.next_product }}
-			</div>
-		{% endif %}
-	{% endif %}
+		</div>
+		<div class="product--navigation">
+			 <!-- navigating to previous/next product in the collection -->
+			{% if collection %}
+				{% if collection.previous_product %}
+					<div class="left">{{ '&larr; Previous Product' | link_to: collection.previous_product }}
+					</div>
+				{% endif %}
+				{% if collection.next_product %}
+					<div class="right">{{ 'Next Product &rarr;' | link_to: collection.next_product }}
+					</div>
+				{% endif %}
+			{% endif %}
 
+		</div>
 	</div>
-</div>
+</main>
+
+<!-- =============== -->
+
 
 <script type="text/javascript">
 
