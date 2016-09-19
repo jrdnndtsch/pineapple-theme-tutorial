@@ -21,7 +21,7 @@ you probably want to put your nav and footer in this file -->
   
 </head>
 <body>
-		<!-- Navigation Main Menu -->
+	<!-- Navigation Main Menu -->
 	<nav class="main">
 		<ul>
 			{% for link in linklists.main-menu.links %}
@@ -44,12 +44,10 @@ you probably want to put your nav and footer in this file -->
 				</div>
 				<div class="cart--qty">
 				  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}">
-				    <!-- <span class="icon icon-minus" aria-hidden="true"></span> -->
 				    <span class="fallback-text">&minus;</span>
 				  </button>
 				  <input type="text" name="updates[]" class="ajaxcart__qty-num" value="231" min="0" data-id="{{id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
 				  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}">
-				    <!-- <span class="icon icon-plus" aria-hidden="true"></span> -->
 				    <span class="fallback-text">+</span>
 				  </button>
 				</div>
@@ -66,8 +64,6 @@ you probably want to put your nav and footer in this file -->
 	<header>
 		<h1 class="shop-name"><a href="/">{{ shop.name }}</a></h1>
 	</header>
-		<!-- Shop Name and Logo -->
-		<!-- <img src="{{'logo.svg' | asset_url}}" class="logo" alt="pineapple"> -->
 		
     {{ content_for_layout}}
 
@@ -85,11 +81,15 @@ you probably want to put your nav and footer in this file -->
 
 	<script>
 		$(function(){
+
+			// Toggle Main Menu Slide-out
 			$('.main--toggle').on('click', function(){
 				$(this).toggleClass('active');
 				$('nav.main').toggleClass('active');
 				$('main').toggleClass('active-nav');
 			});
+
+			// Toggle Cart Slide-out
 			$('.cart').on('click', function(){
 				$('.cart--quick').toggleClass('active');
 				$('main').toggleClass('active-cart');

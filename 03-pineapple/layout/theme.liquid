@@ -19,31 +19,49 @@ you probably want to put your nav and footer in this file -->
   {{ "//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" | script_tag }}
 </head>
 <body>
-	<div class="container">
-
-		<!-- Shop Name and Logo -->
-		<img src="{{'logo.svg' | asset_url}}" class="logo" alt="pineapple">
-		<h1 class="shop-name"><a href="/">{{ shop.name }}</a></h1>
-
-		<!-- Navigation Main Menu -->
+	<!-- Navigation Main Menu -->
+	<nav class="main">
 		<ul>
-		{% for link in linklists.main-menu.links %}
-		 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
-		{% endfor %}
-	  </ul>
+			{% for link in linklists.main-menu.links %}
+			 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</nav>
 
-    {{ content_for_layout}}
+	<!-- The Store Title -->
+  <header>
+  	<h1 class="shop-name"><a href="/">{{ shop.name }}</a></h1>
+  </header>
 
-		<footer>
+	<a href="#" class="main--toggle"><span></span></a>
+
+  <!-- Content from all the pages will be swapped into here -->
+	<div class="wrapper">
+  	{{ content_for_layout}}
+	</div>
+
+	<!-- The Footer Links -->
+	<footer>
+		<div class="wrapper">
 	    <ul>
 	  		{% for link in linklists.footer.links %}
 	  	 	<li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
 	  		{% endfor %}
 	    </ul>
-		</footer>
+		</div>
+	</footer>
 
+	<script>
+		$(function(){
+			
+			// Toggle Main Menu Slide-out
+			$('.main--toggle').on('click', function(){
+				$(this).toggleClass('active');
+				$('nav.main').toggleClass('active');
+				$('main').toggleClass('active-nav');
+			});
+		})
+	</script>
 
-
-	</div>
 </body>
 </html>
