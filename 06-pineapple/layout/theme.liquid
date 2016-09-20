@@ -64,7 +64,7 @@ you probably want to put your nav and footer in this file -->
 		<div class="cart--total">
 
 			 <!-- Shows total price of the cart -->
-			<p><span>Subtotal:</span><span>{{ cart.total_price | money }}</span></p>
+			<p><span>Subtotal:</span><span class="js-subtotal-amount">{{ cart.total_price | money }}</span></p>
 
 			<!-- Link to checkout -->
 			<a href="/checkout" class="btn">Checkout</a>
@@ -132,6 +132,7 @@ you probably want to put your nav and footer in this file -->
 		      data: data,
 		      success: function(){
 		        changeItemQuantityOk(variant_id, update_quantity);
+		        getCart();
 		        // location.reload()
 		        console.log('added')
 		      },
@@ -150,6 +151,7 @@ you probably want to put your nav and footer in this file -->
 		      data: data,
 		      success: function(){
 		        changeItemQuantityOk(variant_id, quantity);
+		        getCart();
 		        // location.reload()
 		        console.log('changed')
 		      },
@@ -163,6 +165,24 @@ you probably want to put your nav and footer in this file -->
 			var input = $('input[data-id="' + variant_id + '"]')
 			input.val(quantity)
 			console.log(input.val())
+		}
+
+		function getCart(){
+			$.ajax({
+			   type: 'GET', 
+			   url: '/cart',
+			   dataType: 'json',
+			   success: function(data){
+			     console.log('get cart')
+			     console.log(data)
+			     console.log(data.total_price)
+			     $('.js-subtotal-amount').text(data.total_price)
+			   },
+			   error: function(error){
+			   	alert(error.responseJSON.description)
+			   }
+			});
+
 		}
 	</script>
 
