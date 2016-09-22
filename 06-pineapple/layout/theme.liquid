@@ -49,13 +49,17 @@ you probably want to put your nav and footer in this file -->
 							<span class="price">{{ item.price | money }}</span>
 						</div>
 						<div class="cart--qty">
-						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}" onclick="changeItemQuantity('{{ item.id }}', {{ item.quantity | minus: 1 }})">
+
+						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{item.id}}"  onclick="removeItem('{{ item.id }}')">
 						    <span class="fallback-text">&minus;</span>
 						  </button>
-						  <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{item.quantity}}" min="0" data-id="{{item.id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+
+						  <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{item.quantity}}" min="0" data-id="{{item.id}}"  aria-label="quantity" pattern="[0-9]*">
+
 						  <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}" onclick="addItem('{{ item.id }}')">
 						    <span class="fallback-text">+</span>
 						  </button>
+
 						</div>
 					</div>
 				</div>
@@ -115,15 +119,21 @@ you probably want to put your nav and footer in this file -->
 			$('.ajaxcart__qty-num').on('change', function(){
 				var id = $(this).data('id');
 				var quantity = parseInt($(this).val());
-				console.log(id, quantity)
+				// console.log(id, quantity)
 				changeItemQuantity(id, quantity)
 			})
 
 		}) // end ready function
 
 		function addItem(variant_id) {
-			var update_quantity = parseInt($('input[data-id="' + variant_id + '"]').val()) + 1
-		  // var quantity = 1
+			// Pull the current quantity from input form
+			var quantity =  parseInt($('input[data-id="' + variant_id + '"]').val())
+
+			// This variable is used to send the new quantity value to changeItemQuantityOk function
+			var new_quantity = quantity + 1
+
+			// Set data values for ajax call - quantity is hardcoded to one
+			//    -- we're going to the cart/add.js endpoint
 		  var data = 'id='+ variant_id + '&quantity=1' 
 		   $.ajax({
 		      type: 'POST', 
@@ -131,59 +141,94 @@ you probably want to put your nav and footer in this file -->
 		      dataType: 'json', 
 		      data: data,
 		      success: function(){
-		        changeItemQuantityOk(variant_id, update_quantity);
+		        changeItemQuantityOk(variant_id, new_quantity);
 		        getCart();
-		        // location.reload()
-		        console.log('added')
 		      },
 		      error: function(error){
 		      	alert(error.responseJSON.description)
 		      }
 		   });
+		}
+
+		function removeItem(variant_id) {
+			// Pull the current quantity from input form
+			var quantity =  parseInt($('input[data-id="' + variant_id + '"]').val())
+
+			// if there is any quantity
+			if (quantity > 0){
+				// This variable is used for the change.js ajax call 
+				// as well as to send the new quantity value to changeItemQuantityOk function
+				var new_quantity = quantity - 1
+
+				// Set data values for ajax call - quantity is dynamic since we're 
+				// changing the quantity to whatever the current quantity is minus 1
+				//    -- we're going to the cart/change.js endpoint
+			  var data = 'id='+ variant_id + '&quantity='+ new_quantity 
+				$.ajax({
+				  type: 'POST', 
+				  url: '/cart/change.js',
+				  dataType: 'json', 
+				  data: data,
+				  success: function(){
+				    changeItemQuantityOk(variant_id, new_quantity);
+				    getCart();
+				  },
+				  error: function(error){
+				  	alert(error.responseJSON.description)
+				  }
+				});	
+			}
 		}
 
 		function changeItemQuantity(variant_id, quantity) {
-		  var data = 'id='+ variant_id + '&quantity='+ quantity 
-		   $.ajax({
-		      type: 'POST', 
-		      url: '/cart/change.js',
-		      dataType: 'json', 
-		      data: data,
-		      success: function(){
-		        changeItemQuantityOk(variant_id, quantity);
-		        getCart();
-		        // location.reload()
-		        console.log('changed')
-		      },
-		      error: function(error){
-		      	alert(error.responseJSON.description)
-		      }
-		   });
+			// Set data values for ajax call - quantity is dynamic since we're 
+			// changing the quantity to whatever the user has inputed
+			//    -- we're going to the cart/change.js endpoint
+
+			if(quantity >= 0){
+			  var data = 'id='+ variant_id + '&quantity='+ quantity 
+				$.ajax({
+				  type: 'POST', 
+				  url: '/cart/change.js',
+				  dataType: 'json', 
+				  data: data,
+				  success: function(){
+				    changeItemQuantityOk(variant_id, quantity);
+				    getCart();
+				  },
+				  error: function(error){
+				  	alert(error.responseJSON.description)
+				  }
+				});		
+			} else {
+				alert("cannot add negative quantity")
+			}
 		}
 
-		function changeItemQuantityOk(variant_id, quantity){
+		function changeItemQuantityOk(variant_id, new_quantity){
+			// get the input corresponding to the the product by variant id
 			var input = $('input[data-id="' + variant_id + '"]')
-			input.val(quantity)
-			console.log(input.val())
+			// change the input value to the new quantity
+			new_quantity >= 0 ? input.val(new_quantity) : input.val(0)
 		}
 
 		function getCart(){
+			// an ajax call to the /cart endpoint to obtain the new cart total price
+			//   -- on success update the subtotal with the new amount
 			$.ajax({
 			   type: 'GET', 
 			   url: '/cart',
 			   dataType: 'json',
 			   success: function(data){
-			     console.log('get cart')
-			     console.log(data)
-			     console.log(data.total_price)
-			     $('.js-subtotal-amount').text(data.total_price)
+			   	var dollar_amount = '$' + (data.total_price / 100).toFixed(2).toLocaleString()
+			     $('.js-subtotal-amount').text(dollar_amount)
 			   },
 			   error: function(error){
 			   	alert(error.responseJSON.description)
 			   }
 			});
-
 		}
+
 	</script>
 
 </body>
