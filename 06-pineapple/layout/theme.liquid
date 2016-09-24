@@ -125,6 +125,10 @@ you probably want to put your nav and footer in this file -->
 
 		}) // end ready function
 
+
+		// AJAX Cart Functions
+		// -------------------
+
 		function addItem(variant_id) {
 			// Pull the current quantity from input form
 			var quantity =  parseInt($('input[data-id="' + variant_id + '"]').val())
@@ -156,53 +160,41 @@ you probably want to put your nav and footer in this file -->
 
 			// if there is any quantity
 			if (quantity > 0){
-				// This variable is used for the change.js ajax call 
-				// as well as to send the new quantity value to changeItemQuantityOk function
+				// reduce the quantity by 1
 				var new_quantity = quantity - 1
-
-				// Set data values for ajax call - quantity is dynamic since we're 
-				// changing the quantity to whatever the current quantity is minus 1
-				//    -- we're going to the cart/change.js endpoint
-			  var data = 'id='+ variant_id + '&quantity='+ new_quantity 
-				$.ajax({
-				  type: 'POST', 
-				  url: '/cart/change.js',
-				  dataType: 'json', 
-				  data: data,
-				  success: function(){
-				    changeItemQuantityOk(variant_id, new_quantity);
-				    getCart();
-				  },
-				  error: function(error){
-				  	alert(error.responseJSON.description)
-				  }
-				});	
+				//Call the change.js ajax function
+				changeItemAjax(variant_id, new_quantity)
 			}
 		}
 
 		function changeItemQuantity(variant_id, quantity) {
-			// Set data values for ajax call - quantity is dynamic since we're 
-			// changing the quantity to whatever the user has inputed
-			//    -- we're going to the cart/change.js endpoint
-
+			// if there is quantity or if the user wants to set it to 0
 			if(quantity >= 0){
-			  var data = 'id='+ variant_id + '&quantity='+ quantity 
-				$.ajax({
-				  type: 'POST', 
-				  url: '/cart/change.js',
-				  dataType: 'json', 
-				  data: data,
-				  success: function(){
-				    changeItemQuantityOk(variant_id, quantity);
-				    getCart();
-				  },
-				  error: function(error){
-				  	alert(error.responseJSON.description)
-				  }
-				});		
+				//Call the change.js ajax function
+				changeItemAjax(variant_id, quantity)
 			} else {
 				alert("cannot add negative quantity")
 			}
+		}
+
+		function changeItemAjax(variant_id, new_quantity){
+			// Set data values for ajax call - quantity is dynamic since we're 
+			// changing the quantity to whatever the user has inputed
+			//    -- we're going to the cart/change.js endpoint
+		  var data = 'id='+ variant_id + '&quantity='+ new_quantity 
+			$.ajax({
+			  type: 'POST', 
+			  url: '/cart/change.js',
+			  dataType: 'json', 
+			  data: data,
+			  success: function(){
+			    changeItemQuantityOk(variant_id, new_quantity);
+			    getCart();
+			  },
+			  error: function(error){
+			  	alert(error.responseJSON.description)
+			  }
+			});
 		}
 
 		function changeItemQuantityOk(variant_id, new_quantity){
