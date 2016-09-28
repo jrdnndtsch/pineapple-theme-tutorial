@@ -27,8 +27,19 @@ you probably want to put your nav and footer in this file -->
 			{% for link in linklists.main-menu.links %}
 			 <li {% if link.active %}class="current"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
 			{% endfor %}
+			
+			<!-- Links for customer accounts -->
+      {% if customer %}
+      	<li>Logged in as <a href="/account">{{ customer.first_name }}</a> · {{ 'Log out' | customer_logout_link }}</li>
+      {% else %}
+      	<li>{{ 'Log in' | customer_login_link }}</li>
+        {% if shop.customer_accounts_optional %}
+        	<li>{{ 'Create an account' | customer_register_link }}</li>
+        {% endif %}
+      {% endif %}
 		</ul>
 	</nav>
+
 
 	<!-- Slide-out Cart -->
 	<div class="cart--quick">
